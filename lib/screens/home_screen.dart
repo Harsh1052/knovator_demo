@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:knovator_task/custom_widgets/post_tile.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/post_provider.dart';
@@ -29,36 +30,14 @@ class HomeScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
 
                   final post = postProvider.posts[index];
-                  return Container(
-                    color: post.isVisited?Colors.white:Colors.pink,
-                    margin: const EdgeInsets.all(5),
-                    child: ListTile(
-                      trailing: Container(
-                      padding: const EdgeInsets.all(5),
-                        width: 30,
-                        height: 30,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.blue,
-                        ),
-                        child: Center(child: Text(post.tick.toString()??'0',style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold
-                        ),)),
-                      ) ,
-                      key : post.key,
-                      title: Text(post.title),
-                      //subtitle: Text(postProvider.posts[index].body),
-                      onTap: () {
-                        postProvider.startTimer(index,force: true);
-                        Navigator.pushNamed(context, '/detail',
-                            arguments: {
+                  return PostTile(post: post,onTap: () {
+                    postProvider.startTimer(index,force: true);
+                    Navigator.pushNamed(context, '/detail',
+                        arguments: {
                           'postId': post.id,
-                            'provider': postProvider,
-                            }).whenComplete((){ postProvider.markAsVisited(index);});
-                      },
-                    ),
-                  );
+                          'provider': postProvider,
+                        }).whenComplete((){ postProvider.markAsVisited(index);});
+                  },);
                 },
               );
             }
